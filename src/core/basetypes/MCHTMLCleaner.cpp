@@ -47,7 +47,7 @@ String * HTMLCleaner::cleanHTML(String * input)
     Data * data = input->dataUsingEncoding("utf-8");
     tidyBufAppend(&docbuf, data->bytes(), data->length());
     
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if (TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) && !targetEnvironment(macCatalyst)
     // This option is not available on the Mac.
     tidyOptSetBool(tdoc, TidyDropEmptyElems, no);
 #endif
