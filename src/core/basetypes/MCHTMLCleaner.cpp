@@ -34,6 +34,10 @@ using namespace mailcore;
 
 String * HTMLCleaner::cleanHTML(String * input)
 {
+#if TARGET_OS_MACCATALYST
+    return input;
+#endif
+
     TidyBuffer output;
     TidyBuffer errbuf;
     TidyBuffer docbuf;
@@ -46,8 +50,7 @@ String * HTMLCleaner::cleanHTML(String * input)
     
     Data * data = input->dataUsingEncoding("utf-8");
     tidyBufAppend(&docbuf, data->bytes(), data->length());
-    
-#if (TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) && !TARGET_OS_MACCATALYST
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
     // This option is not available on the Mac.
     tidyOptSetBool(tdoc, TidyDropEmptyElems, no);
 #endif
